@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -17,7 +17,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.truecaller.assignment.charsnwords.HiltTestRunner"
     }
 
     buildTypes {
@@ -40,6 +40,18 @@ android {
     buildFeatures {
         compose = true
         hilt {
+        }
+    }
+
+    sourceSets {
+        getByName("main") {
+            java.srcDir("src/main/java")
+        }
+        getByName("androidTest") {
+            java.srcDir("src/androidTest/java")
+        }
+        getByName("test") {
+            java.srcDir("src/test/java")
         }
     }
 }
@@ -67,15 +79,18 @@ dependencies {
     implementation(libs.converter.scalars)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.androidx.core.testing)
 }
 
 kapt {
